@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNet.Identity
+@model Lakshmi.BLL.DTO.PhotoDTO
+
+<div style="display: flex;">
+    <div>
+        <div id="Photo_stena">
+            <div style="display:flex; flex-direction:column; text-align: center; margin-left:auto; margin-right:auto;">
+                @Html.Raw("<img style='width:auto; text-align: center; height: 850px;' src=\"data:image/jpeg;base64,"
+     + Convert.ToBase64String(Model.Image) + "\" />")
+            </div>
+        </div>
+    </div>
+    <div style="width: 360px; height: 850px; margin-left:5px; display:flex; flex-direction: column; justify-content: space-between;">
+        <div style="height: 600px;">
+            <div style="background: #272727; color: white; max-height:400px; padding-left: 3px;">
+                <a style="text-align: center; font-size: 1.5em; color: white;" href="@Url.Action("Page", "Home", new { id = Model.UserDtoId })">
+                    <strong>@Html.DisplayFor(ModelItem => Model.NickName) : </strong>
+                </a>
+                <p style="font-size: 1.2em; max-width: 360px; "> @Html.DisplayFor(m => Model.Caption)</p>
+            </div>
+            <p style=" font-size: 1.5em;">
+                Комментарии:
+            </p>
+            <div id="comments" style="overflow: auto; max-height: 555px;">
+                <div id="searchresults">
+                    @{
+                        int count = 0;
+                    }
+                    @foreach (var comment in ViewBag.Comments)
+                    {
+                        string commentSelf = "commentSelf_" + count;
+                            count++;
+                        
+                    <div id ="@commentSelf" style="min-height: 77.4px; height:auto; border-top: 1px groove rgba(170, 170, 170, 0.55);">
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Moder") || User.Identity.GetUserId() == comment.UserDtoId)
+                        {
+                            <div>                                
+                                @using (Ajax.BeginForm("FormForUpdateComment", "Crud", new AjaxOptions { UpdateTargetId = commentSelf }))
+                                {
+                                    @Html.ValidationSummary(true)
+                                    <input type="hidden" name="id" value="@comment.Id" />
+                                    <input style="font-size: 0.8em; text-align:center;" type="submit" value="Изменить коментарий" />
+                                }
+                                @using (Ajax.BeginForm("DeleteComment", "Crud", new AjaxOptions { UpdateTargetId = "comments", Confirm = "Удалить комментарий?" }))
+                                {
+                                    @Html.ValidationSummary(true)
+                                    <input type="hidden" name="id" value="@comment.Id" />
+                                    <input type="hidden" name="photoId" value="@Model.Id" />
+                                    <input style="font-size: 0.8em; text-align:center;" type="submit" value="Удалить коментарий" />
+                                }
+
+                            </div>
+                        }
+                        <p style="font-size: 1.1em;">
+                            <a style="text-align: center;" href="@Url.Action("Page", "Home", new { id = comment.UserDtoId})">
+                                <strong>@comment.NickName:</strong>
+                            </a>
+                            <div style="word-wrap: break-word;"> @comment.Signature</div>
+                            <br />
+                            <div style="height: 10px; width: 1px;"></div>
+                        </p>
+
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div>
+            @using (Ajax.BeginForm("AddComment", "Crud", new AjaxOptions { UpdateTargetId = "comments" }))
+            {
+                @Html.ValidationSummary(true)
+                <fieldset style="border-top: 3px solid rgba(70, 70, 70, 0.85);">
+                    <br />
+                    <input type="hidden" name="UserDtoId" value="@User.Identity.GetUserId()" />
+                    <input type="hidden" name="PhotoId" value="@Model.Id" />
+                    <textarea style="height: 80px;" rows="10" cols="45" name="Signature" placeholder="ВЫ можете написать коментарий к фото" required></textarea>
+                    <p>
+                        <input style="font-size: 1.4em; text-align:center;" type="submit" value="Оставить комментарий" />
+                    </p>
+                </fieldset>
+            }</div>
+        </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $.ajaxSetup({ cache: false });
+
+        $(".viewDialog1").on("click", function (e) {
+            e.preventDefault();
+
+            $("<div></div>")
+                .addClass("dialog")
+                .appendTo("body")
+                .dialog({
+                    title: $(this).attr("data-dialog-title"),
+                    close: function () { $(this).remove() },
+                    modal: true
+                })
+                .load(this.href);
+        });
+    });
+</script>

@@ -1,0 +1,9 @@
+﻿<div style="text-align: center">
+    <h3>Вы действительно хотите удалить ваше фото?</h3>
+    @using (Html.BeginForm("DeletePhoto", "Crud", FormMethod.Post, new
+    { enctype = "multipart/form-data" }))
+    {
+        <input type="hidden" name="userId" value="@ViewBag.userId" />
+        <input style="width: 200px; font-size: 1.2em; height: 65px; text-align: center;" type="submit" value="удалить" />
+    }
+</div>

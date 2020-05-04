@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<Lakshmi.BLL.DTO.CommentDTO>
+
+    <div id="searchresults">
+        @{
+            int count = 0;
+        }
+        @foreach (var comment in Model)
+        {
+            string commentSelf = "commentSelf_" + count;
+            count++;
+
+            <div id="@commentSelf" style="min-height: 77.4px; height:auto; border-top: 1px groove rgba(170, 170, 170, 0.55);">
+                @if (User.IsInRole("Admin") || User.IsInRole("Moder") || User.Identity.GetUserId() == comment.UserDtoId)
+                {
+                    <div>
+                        @using (Ajax.BeginForm("FormForUpdateComment", "Crud", new AjaxOptions { UpdateTargetId = commentSelf }))
+                        {
+                            @Html.ValidationSummary(true)
+                            <input type="hidden" name="id" value="@comment.Id" />
+                            <input style="font-size: 0.8em; text-align:center;" type="submit" value="Изменить коментарий" />
+                        }
+                        @using (Ajax.BeginForm("DeleteComment", "Crud", new AjaxOptions { UpdateTargetId = "comments", Confirm = "Удалить комментарий?" }))
+                        {
+                            @Html.ValidationSummary(true)
+                            <input type="hidden" name="id" value="@comment.Id" />
+                            <input type="hidden" name="photoId" value="@comment.PhotoDtoId" />
+                            <input style="font-size: 0.8em; text-align:center;" type="submit" value="Удалить коментарий" />
+                        }
+
+                    </div>
+                }
+                <p style="font-size: 1.1em;">
+                    <a style="text-align: center;" href="@Url.Action("Page", "Home", new { id = comment.Id})">
+                        <strong>@comment.NickName:</strong>
+                    </a>
+                    <div style="word-wrap: break-word;"> @comment.Signature</div>
+                    <br />
+                    <div style="height: 15px; width: 1px;"></div>
+                </p>
+            </div>
+        }
+    </div>

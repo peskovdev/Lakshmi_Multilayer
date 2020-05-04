@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNet.Identity
+@model Lakshmi.WEB.Models.PhotoViewModel
+
+@using (Html.BeginForm("AddPhoto", "Crud", FormMethod.Post, new
+{ enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <input type="hidden" name="UserDtoId" value="@User.Identity.GetUserId()" />
+        <legend>Добавить изображение</legend>
+
+        <div class="editor-label">Подпись к фотографии</div>
+        <div class="editor-field">
+            <textarea style="width: 550px; height: 80px;" rows="10" cols="45" maxlength="1000" name="Caption" placeholder="ВЫ можете написать коментарий к фото" required></textarea>
+        </div>
+
+        <div class="editor-label">Файл изображения</div>
+        <div class="editor-field">
+            <input type="file" name="uploadImage" enctype="multipart/form-data" multiple accept="image/*,image/jpeg" />
+        </div>
+
+        <p>
+            <input type="submit" value="Добавить" />
+        </p>
+    </fieldset>
+}
+

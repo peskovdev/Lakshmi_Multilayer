@@ -1,0 +1,15 @@
+﻿@model Lakshmi.BLL.DTO.CommentDTO
+
+    <div style="padding-top: 20px; padding-bottom: 20px;">
+        @using (Ajax.BeginForm("UpdateComment", "Crud", new AjaxOptions { UpdateTargetId = "comments", Confirm = "Подтвердить изменения?" }))
+        {
+            @Html.ValidationSummary(true)
+
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <input type="hidden" name="PhotoDtoId" value="@Model.PhotoDtoId" />
+            <input style="font-size: 0.8em; text-align:center;" type="submit" value="Сохранить изменения" />
+            <textarea rows="10" cols="45" name="Signature" maxlength="500" placeholder="ВЫ можете написать коментарий к фото" required>@Model.Signature</textarea>
+
+        }
+    </div>
+

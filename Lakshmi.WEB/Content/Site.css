@@ -1,0 +1,123 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background: #e0e0e0;
+}
+!textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+header {
+    width: 1170px;
+    margin: auto;
+    background: #272727;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select {
+    max-width: 280px;
+}
+
+#Photo_stena {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.div-avatar {
+    width: 270px;
+    height: 270px;
+    border-radius: 50%;
+}
+.photo-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pho-1-to {
+    width: 370px;
+    height: 370px;
+    margin-top: 16px;
+}
+
+.pho-2-to {
+    min-height: 300px;
+    max-height: 650px;
+    min-width: 400px;
+    max-width: 600px;
+    margin-top: 16px;
+    position: center;
+    overflow: auto;
+}
+
+.pho-3-to {
+    width: 150px;
+    height: 150px;
+    margin-top: 16px;
+}
+
+.body-content {
+    background: white;
+}
+
+.defCommMini {
+    width: 350px;
+    height: 60px;
+    text-align: center;
+    margin: auto;
+    border-bottom: 1px solid white;
+    background: #272727;
+    color: white;
+}
+
+.defCommMini:hover {
+    background: #3e3e3e;
+    color: #9cb6ff;
+}
+
+.defComm {
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    border: 1px solid white;
+}
+
+.defComm a {
+    color: white;
+}
+
+#changecomm:checked + label + .defComm {
+    display: flex
+}
+
+.like{
+    width:30px;
+}

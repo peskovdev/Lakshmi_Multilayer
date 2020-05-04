@@ -1,0 +1,19 @@
+﻿@model Lakshmi.WEB.Models.LikeViewModel
+    <div id="@Model.IdName" style="display: flex;">
+        @using (Ajax.BeginForm("ChangeLike", "Crud", new AjaxOptions { UpdateTargetId = Model.IdName }))
+        {
+            <input type="hidden" name="id" value="@Model.IdPhoto" />
+            <input type="hidden" name="idName" value="@Model.IdName" />
+            <button type="submit" style="border: none; outline: none; background:white;">
+                @if (Model.Value)
+                {
+                    <img class="like" src="@Url.Content("~/Content/Images/LikeOn.png")" />
+                }
+                else
+                {
+                    <img class="like" src="@Url.Content("~/Content/Images/LikeOff.png")" />
+                }
+            </button>
+        }
+        @Html.DisplayFor(ModelItem => Model.Count)
+    </div>

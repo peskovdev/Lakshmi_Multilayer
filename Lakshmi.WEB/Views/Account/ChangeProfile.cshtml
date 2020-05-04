@@ -1,0 +1,93 @@
+﻿@using Microsoft.AspNet.Identity
+@model Lakshmi.WEB.Models.ChangeModel
+@{
+    ViewBag.Title = "Page";
+}
+<h3>@ViewBag.Message</h3>
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("ChangeProfile", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                if (Model.Userpic != null)
+                {
+                    <div class="div-avatar">
+                        @Html.Raw("<img class=\"photo-avatar\" src=\"data:image/jpeg;base64,"
+                                    + Convert.ToBase64String(Model.Userpic) + "\" />")
+                    </div>
+                }
+
+                <div class="form-group">
+                    <div class="editor-label"> Изменить изображение </div>
+                    <div class="editor-field">
+                        <input type="file" name="uploadImage" enctype="multipart/form-data" multiple accept="image/*,image/jpeg" />
+                    </div>
+                </div>
+                <input name="nick" value="@Model.NickName" type="hidden" />
+                <input name="First" value="@Model.FirstName" type="hidden" />
+                <input name="Second" value="@Model.SecondName" type="hidden" />
+
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NickName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.NickName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.NickName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SecondName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.SecondName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.SecondName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Сохранить изменения" class="btn-default" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+</div>
+
+
+<a style="text-align: center;" href="@Url.Action("ChangePassword","Account")">Сменить пароль</a>
+<br />
+<a class="viewDialog" data-dialog-title="Удаление Аккаунта" href="@Url.Action("DeleteAccount", "Account")">
+    Удалить этот аккаунт
+</a>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+            $.ajaxSetup({ cache: false });
+
+            $(".viewDialog").on("click", function (e) {
+                e.preventDefault();
+
+                $("<div></div>")
+                    .addClass("dialog")
+                    .appendTo("body")
+                    .dialog({
+                        title: $(this).attr("data-dialog-title"),
+                        close: function () { $(this).remove() },
+                        modal: true
+                    })
+                    .load(this.href);
+            });
+        });
+    </script>
+}
+
+

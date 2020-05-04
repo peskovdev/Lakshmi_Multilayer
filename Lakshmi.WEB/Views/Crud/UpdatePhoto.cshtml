@@ -1,0 +1,17 @@
+﻿@model Lakshmi.BLL.DTO.PhotoDTO
+
+<div style="display:flex; flex-direction: column; align-items: center;">
+    <h3>Вы можете изменить подпись фотографии</h3>
+    @using (Html.BeginForm("UpdatePhoto", "Crud", FormMethod.Post, new
+    { enctype = "multipart/form-data" }))
+    {
+        <br />
+        <input name="UserDtoId" type="hidden" value="@Model.UserDtoId"/>
+        <div class="editor-field">
+            <textarea style="width: 550px; height: 80px;" rows="10" cols="45" maxlength="1000" name="Caption" placeholder="ВЫ можете написать коментарий к фото" required>@Model.Caption</textarea>
+        </div>
+        <p>
+            <input style="width: 300px; font-size: 1.4em; height: 35px;" type="submit" value="Изменить" />
+        </p>
+    }
+</div>
