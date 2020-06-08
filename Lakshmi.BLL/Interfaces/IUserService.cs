@@ -23,6 +23,11 @@ namespace Lakshmi.BLL.Interfaces
         string GetUserId(string email);
         bool GetEmailConfirmed(string Email);
         UserDTO GetUser(string id);
+        IEnumerable<UserDTO> GetUsers();
+        IEnumerable<UserDTO> FindUsers(string firstPart, string secondPart);
+        IEnumerable<UserDTO> FindUsersForAdmin(string searchNickName, string searchFirstName, string searchSecondName, string searchEmail, string searchId);
+
+
 
         Task<ClaimsIdentity> ConfirmingEmail(string Token, string Email);
         Task<ClaimsIdentity> Authenticate(UserDTO userDto);

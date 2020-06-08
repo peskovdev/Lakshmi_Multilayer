@@ -383,11 +383,13 @@
     <Content Include="Views\Account\DeleteAccount.cshtml" />
     <Content Include="Views\Home\GetComments.cshtml" />
     <Content Include="Views\Crud\ChangeLike.cshtml" />
+    <Content Include="Views\Home\FindUsers.cshtml" />
+    <Content Include="Views\Home\FindPhotos.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\" />
-    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

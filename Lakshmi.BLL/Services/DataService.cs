@@ -155,23 +155,31 @@ namespace Lakshmi.BLL.Services
             return PhotosDTO;
         }
 
-        public IEnumerable<PhotoDTO> FindPhotos() //Получение списка фоток конкретного юзера
-        {
-            var photos = Database.Photos.GetAll();
-            List<PhotoDTO> PhotosDTO = new List<PhotoDTO>();
-            foreach (var photo in photos)
+        public IEnumerable<PhotoDTO> FindPhotos(string caption, string userSelfId) //Получение списка фоток конкретного юзера
+        {            
+            if (!String.IsNullOrEmpty(caption))
             {
-                ApplicationUser user = Database.UserManager.FindById(photo.ApplicationUserId);
-                PhotosDTO.Add(new PhotoDTO
+                var photos = Database.Photos.Find(s => s.Caption.Contains(caption));
+                List<PhotoDTO> PhotosDTO = new List<PhotoDTO>();
+                foreach (var photo in photos)
                 {
-                    Id = photo.Id,
-                    Caption = photo.Caption,
-                    Likes = CountLikes(photo.Id),
-                    Image = photo.Image,
-                    UserDtoId = photo.ApplicationUserId
-                });
+                    ApplicationUser user = Database.UserManager.FindById(photo.ApplicationUserId);
+                    PhotosDTO.Add(new PhotoDTO
+                    {
+                        Id = photo.Id,
+                        Caption = photo.Caption,
+                        Image = photo.Image,
+                        ImageMini = photo.ImageMini,
+                        Likes = CountLikes(photo.Id),
+                        Liked = Database.Likes.Check(photo.Id, userSelfId),
+                        UserDtoId = photo.ApplicationUserId,
+                        NickName = user.ClientProfile.NickName,
+                        userpicMini = user.ClientProfile.UserpicMini
+                    });
+                }
+                return PhotosDTO;
             }
-            return PhotosDTO;
+            return GetPhotosAll(userSelfId);
         }
 
         public void MakeComment(CommentDTO commentDto)

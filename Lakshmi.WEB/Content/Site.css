@@ -3,22 +3,6 @@
     padding-bottom: 20px;
     background: #e0e0e0;
 }
-!textarea {
-    width: 100%;
-    box-sizing: border-box;
-}
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-header {
-    width: 1170px;
-    margin: auto;
-    background: #272727;
-}
-
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -32,18 +16,14 @@ select {
     max-width: 280px;
 }
 
-#Photo_stena {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
 .div-avatar {
     width: 270px;
     height: 270px;
+    border-radius: 50%;
+}
+.div-avatar-mini {
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
 }
 .photo-avatar {
@@ -59,29 +39,20 @@ select {
 }
 
 .pho-1-to {
-    width: 370px;
-    height: 370px;
+    width: 570px;
+    height: 620px;
     margin-top: 16px;
 }
-
 .pho-2-to {
-    min-height: 300px;
-    max-height: 650px;
-    min-width: 400px;
-    max-width: 600px;
+    height: 450px;
+    width: 450px;
     margin-top: 16px;
-    position: center;
-    overflow: auto;
 }
 
 .pho-3-to {
     width: 150px;
     height: 150px;
     margin-top: 16px;
-}
-
-.body-content {
-    background: white;
 }
 
 .defCommMini {
@@ -117,7 +88,15 @@ select {
 #changecomm:checked + label + .defComm {
     display: flex
 }
-
-.like{
-    width:30px;
+.index {
+    display: flex;
+    flex-direction: column;
+    background-color: white;    
+    border: 1px solid rgba(128, 128, 128, 0);
+}
+.index:hover {
+    border: 1px solid;
+}
+.like {
+    width: 30px;
 }

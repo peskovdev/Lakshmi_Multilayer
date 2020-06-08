@@ -18,7 +18,7 @@ namespace Lakshmi.BLL.Interfaces
         PhotoDTO GetPhotoForLooking(int id, string userSelfId);
         IEnumerable<PhotoDTO> GetPhotosAll(string userSelfId);//все фотки из бд(для ленты)        
         IEnumerable<PhotoDTO> GetPhotos(string userId, string userSelfId);//фотки конкретного юзера(для странички)
-        IEnumerable<PhotoDTO> FindPhotos();//все фотки из бд(для поиска)
+        IEnumerable<PhotoDTO> FindPhotos(string caption, string userSelfId);//все фотки из бд(для поиска)
         bool ChangeLikes(int photoId, string userId);
         int CountLikes(int id);
 

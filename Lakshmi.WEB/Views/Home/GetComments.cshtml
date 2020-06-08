@@ -31,7 +31,7 @@
                     </div>
                 }
                 <p style="font-size: 1.1em;">
-                    <a style="text-align: center;" href="@Url.Action("Page", "Home", new { id = comment.Id})">
+                    <a style="text-align: center;" href="@Url.Action("Page", "Home", new { id = comment.UserDtoId})">
                         <strong>@comment.NickName:</strong>
                     </a>
                     <div style="word-wrap: break-word;"> @comment.Signature</div>

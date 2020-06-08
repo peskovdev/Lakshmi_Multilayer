@@ -1,0 +1,89 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<Lakshmi.BLL.DTO.PhotoDTO>
+@{
+    ViewBag.Title = "Поиск фотографий";
+}
+<form style="display: flex; flex-direction:column; align-items: flex-start;" asp-controller="Home" asp-action="FindPhotos">
+    <h2>Поиск фотографий</h2>
+    <p>
+        <input type="text" name="findCapture" value="@ViewBag.Capture"> - Введите слово связанное с фотографией
+    </p>
+    <p><input type="submit" value="Filter" /></p>
+</form>
+
+<div class="row">
+    @{int c = 0;}
+    @foreach (var item in Model.Reverse())
+    {
+        <div class="col-12 col-sm-3 index justify-content-between">
+            <div>
+                <a href="@Url.Action("Page","home", new { Id = item.UserDtoId})">
+                    @if (item.userpicMini != null)
+                    {
+                        Html.Raw("<img class=\"photo2\" style='' src=\"data:image/jpeg;base64,"
+                                             + Convert.ToBase64String(item.userpicMini) + "\" />");
+                    }
+                    @Html.DisplayFor(ModelItem => item.NickName)
+                    опубликовал:
+                </a>
+                <div style="word-break:break-all;">
+                    @Html.DisplayFor(modelItem => item.Caption)
+                </div>
+            </div>
+            <div>
+                <a class="viewDialog" data-dialog-title="@Html.DisplayFor(ModelItem => item.NickName)" href="@Url.Action("PhotoInfo", "Home", new { id = item.Id })">
+                    <div class="pho-2-to">
+                        @Html.Raw("<img class=\"photo\" style='' src=\"data:image/jpeg;base64,"
+                                                + Convert.ToBase64String(item.Image) + "\" />")
+                    </div>
+                </a>
+                <div style="display:flex; max-width: 500px; box-sizing:content-box;">
+                    @{
+                        string classname = "Like_" + c;
+                        c++;
+                    }
+                    <div id="@classname" style="display: flex;">
+                        @using (Ajax.BeginForm("ChangeLike", "Crud", new AjaxOptions { UpdateTargetId = classname }))
+                        {
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <input type="hidden" name="idName" value="@classname" />
+                            <button type="submit" style="border: none; outline: none; background:white;">
+                                @if (item.Liked)
+                                {
+                                    <img class="like" src="@Url.Content("~/Content/Images/LikeOn.png")" />
+                                }
+                                else
+                                {
+                                    <img class="like" src="@Url.Content("~/Content/Images/LikeOff.png")" />
+                                }
+                            </button>
+                        }
+                        @Html.DisplayFor(ModelItem => item.Likes)
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+            $.ajaxSetup({ cache: false });
+
+            $(".viewDialog").on("click", function (e) {
+                e.preventDefault();
+
+                $("<div></div>")
+                    .addClass("dialog")
+                    .appendTo("body")
+                    .dialog({
+                        title: $(this).attr("data-dialog-title"),
+                        close: function () { $(this).remove() },
+                        modal: true
+                    })
+                    .load(this.href);
+            });
+        });
+    </script>
+}

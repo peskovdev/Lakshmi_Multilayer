@@ -9,6 +9,7 @@ using Lakshmi.BLL.DTO;
 using System.Security.Claims;
 using Lakshmi.BLL.Interfaces;
 using Lakshmi.BLL.Infrastructure;
+using System;
 //using Lakshmi.WEB.Filters;
 //using Lakshmi.WEB.Models;
 
@@ -25,10 +26,15 @@ namespace Lakshmi.WEB.Controllers
             }
         }
 
-
-        public ActionResult GetUsers()
-        {
-            return View();
+        public ActionResult Index(string searchNickName, string searchFirstame, string searchSecondName, string searchEmail, string searchId)
+        {            
+            ViewBag.searchNickName = searchNickName;
+            ViewBag.searchName = searchFirstame;
+            ViewBag.searchSecondName = searchSecondName;
+            ViewBag.searchEmail = searchEmail;
+            ViewBag.searchId = searchId;
+            return View(UserService.FindUsersForAdmin(searchNickName, searchFirstame, searchSecondName, searchEmail, searchId));
         }
+
     }
 }

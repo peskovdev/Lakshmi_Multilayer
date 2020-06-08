@@ -29,6 +29,26 @@ namespace Lakshmi.WEB.Controllers
         {
             dataService = serv;
         }
+        public ActionResult FindPhotos(string findCapture)
+        {            
+            ViewBag.Capture = findCapture;
+            return View(dataService.FindPhotos(findCapture, User.Identity.GetUserId()));
+        }
+        public ActionResult FindUsers(string fullName)
+        {
+            int count = 0;
+            string[] partName = new string[2] { fullName, null };
+            if (fullName != null && fullName != "")
+                count = fullName.Count(c => c == ' ');            
+            if (count != 0)
+            {
+                partName = fullName.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+                
+            ViewBag.Name = fullName;
+            return View(UserService.FindUsers(partName[0], partName[1]));
+        }
+
 
         public ActionResult Index()
         {            

@@ -3,66 +3,65 @@
 @{
     ViewBag.Title = "Page";
 }
-    <div style="display:flex; justify-content: space-around; align-content: center; padding-top:20px; margin-bottom:60px;">
-        @if (Model.User.Userpic != null)
-        {
-            <div class="div-avatar">
-                @Html.Raw("<img class=\"photo-avatar\" src=\"data:image/jpeg;base64,"
-                                    + Convert.ToBase64String(Model.User.Userpic) + "\" />")
-            </div>
-        }
-        else
-        {
-            <div class="div-avatar">
-                <img class="photo-avatar" src="@Url.Content("~/Content/Images/ava.png")" />
-            </div>
-        }        
-        <nav>
-            <h2>@Model.User.NickName</h2>
-            <h2>@Model.User.FirstName @Model.User.SecondName</h2>
+    <div id="row">
+        <div class="col-12 col-sm-12 row justify-content-around">
+            @if (Model.User.Userpic != null)
+            {
+                <div class="div-avatar">
+                    @Html.Raw("<img class=\"photo-avatar\" src=\"data:image/jpeg;base64,"
+                                        + Convert.ToBase64String(Model.User.Userpic) + "\" />")
+                </div>
+            }
+            else
+            {
+                <div class="div-avatar">
+                    <img class="photo-avatar" src="@Url.Content("~/Content/Images/ava.png")" />
+                </div>
+            }
+            <nav>
+                <h2>Ник: @Model.User.NickName</h2>
+                <h2>Имя: @Model.User.FirstName @Model.User.SecondName</h2>
+                @if (User.Identity.GetUserId() == Model.User.Id)
+                {
+                    <div style="display: flex; margin-left: auto;">
+                        <p>
+                            @Html.ActionLink("Настройки учетной записи: " + User.Identity.GetUserName() + "!", "ChangeProfile", "Account", routeValues: null, htmlAttributes: new { title = "Change" })
+                        </p>
+                    </div>
+                }
+            </nav>
             @if (User.Identity.GetUserId() == Model.User.Id)
             {
-                <div style="display: flex; margin-left: auto;">
-                    <p>
-                        @Html.ActionLink("Настройки учетной записи: " + User.Identity.GetUserName() + "!", "ChangeProfile", "Account", routeValues: null, htmlAttributes: new { title = "Change" })
-                    </p>
-                </div>
+                <a class="viewDialog col-12 col-sm-12" data-dialog-title="Добавить фото" href="@Url.Action("AddPhoto", "Crud")">Добавить изображение на страницу</a>
             }
-        </nav>
-    </div>
-
-
-
-
-@if (User.Identity.GetUserId() == Model.User.Id)
-{
-    <a class="viewDialog" data-dialog-title="Добавить фото" href="@Url.Action("AddPhoto", "Crud")">Добавить изображение на страницу</a>
-}
-
-<div id="Photo_stena">
-    @foreach (var photos in Model.Photos.Reverse())
-    {
-        <div>
-            <hr style="color: black" />
-            @if (User.IsInRole("admin") || User.IsInRole("moder") || User.Identity.GetUserId() == photos.UserDtoId)
-            {
-                <div style="display: flex; justify-content: flex-end;">
-                    <p>
-                        <a class="viewDialog" data-dialog-title="Редактировать" href="@Url.Action("UpdatePhoto", "Crud", new { id = photos.Id })">Изменить</a> |
-                        <a class="viewDialog" data-dialog-title="Удалить фотографию" href="@Url.Action("DeletePhoto", "Crud", new { id = photos.Id, userId = photos.UserDtoId })">Удалить</a>
-                    </p>
-                </div>
-            }
-            <a class="viewDialog" data-dialog-title="Подробная информация" href="@Url.Action("PhotoInfo", "Home", new { id = photos.Id })">
-                <div class="pho-1-to">
-                    @Html.Raw("<img class=\"photo\" src=\"data:image/jpeg;base64,"
-                                + Convert.ToBase64String(photos.Image) + "\" />")
-                </div>
-            </a>
-            <p style="text-align:center; max-width: 350px;"> @Html.DisplayFor(modelItem => photos.Caption) </p>
         </div>
-    }
-    <div style="width: 370px;height: 1px; margin-top: 16px;"></div>
+    <div class="row">
+        @foreach (var photos in Model.Photos.Reverse())
+        {
+            <div class="col-12 col-sm-3 index">
+                <div>
+                    @if (User.IsInRole("admin") || User.IsInRole("moder") || User.Identity.GetUserId() == photos.UserDtoId)
+                    {
+                        <div style="display: flex; justify-content: flex-end;">
+                            <p>
+                                <a class="viewDialog" data-dialog-title="Редактировать" href="@Url.Action("UpdatePhoto", "Crud", new { id = photos.Id })">Изменить</a> |
+                                <a class="viewDialog" data-dialog-title="Удалить фотографию" href="@Url.Action("DeletePhoto", "Crud", new { id = photos.Id, userId = photos.UserDtoId })">Удалить</a>
+                            </p>
+                        </div>
+                    }
+                    <a class="viewDialog" data-dialog-title="Подробная информация" href="@Url.Action("PhotoInfo", "Home", new { id = photos.Id })">
+                        <div class="pho-2-to">
+                            @Html.Raw("<img class=\"photo\" src=\"data:image/jpeg;base64,"
+                                        + Convert.ToBase64String(photos.Image) + "\" />")
+                        </div>
+                    </a>
+                </div>
+            <div style="word-break:break-all;">
+                @Html.DisplayFor(modelItem => photos.Caption)
+            </div>
+        </div>
+        }
+    </div>
 </div>
 
 @section scripts {

@@ -122,42 +122,145 @@ namespace Lakshmi.BLL.Services
                 return new OperationDetails(false, "Пользователя с таким ID не существует", "");
             }
         }
-
-        public IEnumerable<UserDTO> GetUsers(string SearchNick, string SearchName, string Search)
+        public IEnumerable<UserDTO> GetUsers()
+        {
+            List<UserDTO> usersfull = new List<UserDTO>();
+            var users = Database.UserManager.Users.ToList();
+            foreach (var user in users)
+            {
+                usersfull.Add(GetUser(user.Id));
+            }
+            return usersfull.ToList();
+        }
+        public IEnumerable<UserDTO> GetUsersForAdmin()
+        {
+            List<UserDTO> usersfull = new List<UserDTO>();
+            var users = Database.UserManager.Users.ToList();
+            foreach (var user in users)
+            {
+                usersfull.Add(GetUserForAdmin(user.Id));
+            }
+            return usersfull.ToList();
+        }
+        public IEnumerable<UserDTO> FindUsers(string firstPart, string secondPart)
         {
             List<UserDTO> users = new List<UserDTO>();
-            var usersNick = Database.UserManager.Users;
-            if(SearchNick != null && SearchNick != " ")
-                usersNick = usersNick.Where(s => s.Email.Contains(SearchNick));
-            foreach (var user in usersNick)
+            List<string> SecondId = new List<string>();
+            int checker = 0;
+            for (int i = 0; i <= 5; i++)
             {
-                users.Add(new UserDTO
+                int count = 0;
+                var usersNick = GetUsers();
+                switch (i)
                 {
-                    Id = user.Id,
-                    NickName = user.ClientProfile.NickName,
-                    FirstName = user.ClientProfile.FirstName,
-                    SecondName = user.ClientProfile.SecondName,
-                    UserpicMini = user.ClientProfile.UserpicMini
-                });
+                    case 0:
+                        if (firstPart != null && firstPart != "" && firstPart != " ")
+                        {
+                            usersNick = usersNick.Where(s => s.NickName.Contains(firstPart));
+                            count++;
+                            checker++;
+                        }                        
+                        break;
+                    case 1:
+                        if (firstPart != null && firstPart != "" && firstPart != " ")
+                        {
+                            usersNick = usersNick.Where(s => s.FirstName.Contains(firstPart));
+                            count++;
+                            checker++;
+                        }                            
+                        break;
+                    case 2:
+                        if (firstPart != null && firstPart != "" && firstPart != " ")
+                        {
+                            usersNick = usersNick.Where(s => s.SecondName.Contains(firstPart));
+                            count++;
+                            checker++;
+                        }
+                            
+                        break;
+                    case 3:
+                        if (secondPart != null && secondPart != "" && secondPart != " ")
+                        {
+                            usersNick = usersNick.Where(s => s.NickName.Contains(secondPart));
+                            count++;
+                            checker++;
+                        }
+                        break;
+                    case 4:
+                        if (secondPart != null && secondPart != "" && secondPart != " ")
+                        {
+                            usersNick = usersNick.Where(s => s.FirstName.Contains(secondPart));
+                            count++;
+                            checker++;
+                        }
+                        break;
+                    case 5:
+                        if (secondPart != null && secondPart != "" && secondPart != " ")
+                        {
+                            usersNick = usersNick.Where(s => s.SecondName.Contains(secondPart));
+                            count++;
+                            checker++;
+                        }                            
+                        break;
+                }
+                if(count != 0)
+                {                                     
+                    foreach (var user in usersNick)
+                    {
+                        int haveDublicate = 0;
+                        foreach (string id in SecondId)
+                        {
+                            if (id == user.Id)
+                            {
+                                haveDublicate++;
+                            }
+                        }
+                        if(haveDublicate == 0)
+                        {
+                            users.Add(new UserDTO
+                            {
+                                Id = user.Id,
+                                NickName = user.NickName,
+                                FirstName = user.FirstName,
+                                SecondName = user.SecondName,
+                                UserpicMini = user.UserpicMini
+                            });
+                            SecondId.Add(user.Id);
+                        }
+                        SecondId.Distinct();
+                    }
+                }
             }
-            /*var userName = Database.UserManager.Users;
-            if (SearchNick != null && SearchNick != " ")
-                userName. = userName.Where(s => s.Email.Contains(SearchNick));
-            usersFirst.Add();
-
-            
-            foreach (var user in usersFirst)
+            if(checker == 0)
             {
-                users.Add(new UserDTO
-                {
-                    Id = user.Id,
-                    NickName = user.ClientProfile.NickName,
-                    FirstName = user.ClientProfile.FirstName,
-                    SecondName = user.ClientProfile.SecondName,
-                    UserpicMini = user.ClientProfile.UserpicMini
-                });
-            }            */
+                return GetUsers();
+            }
             return users;            
+        }
+        public IEnumerable<UserDTO> FindUsersForAdmin(string searchNickName, string searchFirstName, string searchSecondName, string searchEmail, string searchId)
+        {
+            var users = GetUsersForAdmin();
+            if (!String.IsNullOrEmpty(searchNickName))
+            {
+                users = users.Where(s => s.NickName.Contains(searchNickName));
+            }
+            if (!String.IsNullOrEmpty(searchFirstName))
+            {
+                users = users.Where(s => s.FirstName.Contains(searchFirstName));
+            }
+            if (!String.IsNullOrEmpty(searchSecondName))
+            {
+                users = users.Where(s => s.SecondName.Contains(searchSecondName));
+            }
+            if (!String.IsNullOrEmpty(searchEmail))
+            {
+                users = users.Where(s => s.Email.Contains(searchEmail));
+            }
+            if (!String.IsNullOrEmpty(searchId))
+            {
+                users = users.Where(s => s.Id.Contains(searchId));
+            }
+            return users;
         }
 
         //Получить юзера
@@ -170,6 +273,21 @@ namespace Lakshmi.BLL.Services
                 NickName = user.ClientProfile.NickName,
                 FirstName = user.ClientProfile.FirstName,
                 SecondName = user.ClientProfile.SecondName,
+                Userpic = user.ClientProfile.Userpic,
+                UserpicMini = user.ClientProfile.UserpicMini
+            };
+            return userDto;
+        }
+        public UserDTO GetUserForAdmin(string id)
+        {
+            ApplicationUser user = Database.UserManager.FindById(id);
+            UserDTO userDto = new UserDTO
+            {
+                Id = user.Id,
+                NickName = user.ClientProfile.NickName,
+                FirstName = user.ClientProfile.FirstName,
+                SecondName = user.ClientProfile.SecondName,
+                Email = user.Email,
                 Userpic = user.ClientProfile.Userpic,
                 UserpicMini = user.ClientProfile.UserpicMini
             };
