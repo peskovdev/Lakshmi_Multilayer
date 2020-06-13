@@ -15,7 +15,7 @@
                 @Html.ActionLink("Lakshmi", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 @Html.ActionLink("Найти пользователя", "FindUsers", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 @Html.ActionLink("Найти фото", "FindPhotos", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                @if (User.IsInRole("Admin"))
+                @if (User.IsInRole("admin"))
                 {
                     @Html.ActionLink("Админка", "Index", "Admin", new { area = "" }, new { @class = "navbar-brand" })
                 }

@@ -278,6 +278,35 @@ namespace Lakshmi.BLL.Services
             };
             return userDto;
         }
+        public List<string> GetRoles(string id)
+        {
+            List<string> roles = new List<string>();
+            var Roles = Database.UserManager.GetRoles(id);
+            foreach(string role in Roles)
+            {
+                roles.Add(role);
+            }
+            return roles;
+        }
+        public List<string> GetRolesAll()
+        {
+            List<string> roles = new List<string>();
+            var Roles = Database.RoleManager.Roles;
+            foreach (var role in Roles)
+            {
+                roles.Add(role.Name);
+            }
+            return roles;
+        }
+        public void CreateRole(string userid, string roleid) //Добавление роли
+        {            
+            Database.UserManager.AddToRole(userid, roleid);
+        }
+
+        public void DeleteRole(string userid, string roleid) //Удаление роли
+        {
+            Database.UserManager.RemoveFromRole(userid, roleid);
+        }
         public UserDTO GetUserForAdmin(string id)
         {
             ApplicationUser user = Database.UserManager.FindById(id);

@@ -12,6 +12,7 @@ namespace Lakshmi.DAL.Entities
         public int PhotoId { get; set; } //Вторичный ключ для айди фотки
         public Photo Photo { get; set; }
 
+
         public string ApplicationUserId { get; set; } //Вторичный ключ для айди пользователя
         public ApplicationUser ApplicationUser { get; set; }
     }

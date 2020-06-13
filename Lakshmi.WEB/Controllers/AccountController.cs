@@ -276,11 +276,11 @@ namespace Lakshmi.Controllers
         {
             await UserService.SetInitialData(new UserDTO
             {
-                Email = "peskov_sergei@list.ru",
+                Email = "Admin",
                 Password = "abc123456",
-                NickName = "peskov",
-                FirstName = "Сергей",
-                SecondName = "Песков",
+                NickName = "Danya",
+                FirstName = "Данила",
+                SecondName = "Дмитриев",
                 Role = "admin",
             }, new List<string> { "user", "admin", "moder" });
         }

@@ -11,7 +11,7 @@
             count++;
 
             <div id="@commentSelf" style="min-height: 77.4px; height:auto; border-top: 1px groove rgba(170, 170, 170, 0.55);">
-                @if (User.IsInRole("Admin") || User.IsInRole("Moder") || User.Identity.GetUserId() == comment.UserDtoId)
+                @if (User.IsInRole("admin") || User.IsInRole("moder") || User.Identity.GetUserId() == comment.UserDtoId)
                 {
                     <div>
                         @using (Ajax.BeginForm("FormForUpdateComment", "Crud", new AjaxOptions { UpdateTargetId = commentSelf }))

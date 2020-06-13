@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNet.Identity
+@model Lakshmi.WEB.Models.UserForCheckByAdmin
+
+@{
+    ViewBag.Title = "GetInfo";
+}
+
+
+<p style="font-size:2em;">Пользователь - @Model.User.FirstName @Model.User.SecondName</p>
+<p style="font-size:2em;">Никнейм - @Model.User.NickName</p>
+<p style="font-size:1.6em;">
+    Роли которыми обладает пользователь:
+</p>
+<ul style="font-size:1.3em;">
+    @foreach (var role in Model.Roles)
+    {
+        <li>
+            @role
+        </li>
+    }
+</ul>
+@if (!(Model.User.Id == User.Identity.GetUserId()))
+{
+    <a class="viewDialog" data-dialog-title="Удалить юзера" href="@Url.Action("DeleteUs", "Account", new { id = Model.User.Id })">Удалить аккаунт этого пользователя</a>
+}
+
+<br />
+<table cellpadding="10">
+    <thead>
+        Управления ролями
+    </thead>
+    <tr>
+        <th> <pre> Добавить пользователю роль </pre></th>
+        <th><pre>Исключить пользователя из списка</pre></th>
+    </tr>
+    @foreach (var roles in Model.RolesAll)
+    {
+        <tr>
+
+            <td><a href="~/Admin/CreateRole?userid=@Model.User.Id&roleid=@roles"><p class="btn btn-primary">Присвоить роль: @roles</p></a></td>
+            <td><a href="~/Admin/DeleteRole?userid=@Model.User.Id&roleid=@roles"><p class="btn btn-danger">Убрать из списка: @roles</p></a></td>
+
+        </tr>
+    }
+</table>
+
+
+
+@section scripts {
+    <script src='@Url.Content("~/Scripts/jquery-3.4.1.min.js")' type="text/javascript"></script>
+    <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.js")' type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+
+            $.ajaxSetup({ cache: false });
+
+            $(".viewDialog").on("click", function (e) {
+                e.preventDefault();
+
+                $("<div></div>")
+                    .addClass("dialog")
+                    .appendTo("body")
+                    .dialog({
+                        title: $(this).attr("data-dialog-title"),
+                        close: function () { $(this).remove() },
+                        modal: true
+                    })
+                    .load(this.href);
+            });
+        });
+    </script>
+}

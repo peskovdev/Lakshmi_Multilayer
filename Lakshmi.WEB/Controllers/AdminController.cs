@@ -35,6 +35,31 @@ namespace Lakshmi.WEB.Controllers
             ViewBag.searchId = searchId;
             return View(UserService.FindUsersForAdmin(searchNickName, searchFirstame, searchSecondName, searchEmail, searchId));
         }
+        public ActionResult GetInfo(string id) //управление ролями
+        {
+            UserForCheckByAdmin FullUser = new UserForCheckByAdmin()
+            {
+                User = UserService.GetUser(id),
+                Roles = UserService.GetRoles(id),
+                RolesAll = UserService.GetRolesAll()
+            };
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+            return View(FullUser);
+        }
+        public ActionResult CreateRole(string userid, string roleid) //Добавление роли
+        {
+            UserService.CreateRole(userid, roleid);
+            return RedirectToAction("GetInfo", "Admin", new { id = userid });
+        }
+
+        public ActionResult DeleteRole(string userid, string roleid) //Удаление роли
+        {
+            UserService.DeleteRole(userid, roleid);
+            return RedirectToAction("GetInfo", "Admin", new { id = userid });
+        }
 
     }
 }

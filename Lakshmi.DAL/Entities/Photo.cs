@@ -21,8 +21,6 @@ namespace Lakshmi.DAL.Entities
             Likes = new List<Like>();
         }
 
-
-
         public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
     }
